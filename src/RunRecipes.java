@@ -6,8 +6,9 @@ public class RunRecipes {
     }
 
     private void run() {
+        System.out.println("Hello and welcome to the digital recipe book menu");
         recipes = new Recipes();
-        recipes.initializeRecipes();
+        recipes.StandartRecipes();
         recipes.mainMenu();
     }
 }

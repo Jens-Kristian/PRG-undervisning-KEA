@@ -16,30 +16,43 @@ public class Recipes {
         lunch = new ArrayList<>();
         dinner = new ArrayList<>();
         dessert = new ArrayList<>();
-        shopingList = new ArrayList<String>();
+        shopingList = new ArrayList<>();
     }
 
-    public void initializeRecipes() {
-        addRecipe("Pancake", "Flour, Eggs, Milk", 15, 5);
-        addRecipe("Salad", "Lettuce, Tomato, Cucumber", 10, 4);
-        addRecipe("Spaghetti", "Pasta, Tomato Sauce", 30, 4);
-    }
+    public void StandartRecipes() {
+        Recipe pancake = new Recipe("Pancake", "Flour, Eggs, Milk", 15, 10,"No comment");
+        recipeList.add(pancake);
+        dessert.add(pancake);
 
-    public void addRecipe(String name, String ingredients, int time, int rating) {
-        Recipe newRecipe = new Recipe(name, ingredients, time, rating);
+        Recipe salad = new Recipe("Salad", "Lettuce, Tomato, Cucumber", 10, 4,"No comment");
+        recipeList.add(salad);
+        lunch.add(salad);
+
+        Recipe spaghetti = new Recipe("Spaghetti", "Pasta, Tomato Sauce", 30, 7,"No comment");
+        recipeList.add(spaghetti);
+        dinner.add(spaghetti);
+
+        Recipe englishBreakfast = new Recipe("English breakfast", "Beans, eggs, bacon", 30, 2,"No comment");
+        recipeList.add(englishBreakfast);
+        breakfast.add(englishBreakfast);
+        }
+
+    public void addRecipe(String name, String ingredients, int time, int rating, String comment) {
+        Recipe newRecipe = new Recipe(name, ingredients, time, rating, comment);
         recipeList.add(newRecipe);
     }
 
 
     public void mainMenu() {
-        System.out.println("Hello and welcome to the digital recipe book menu\nWould you like to:\n");
+        System.out.println("\nWould you like to:\n");
         System.out.println("See the hole Recipe Collection. Type '1'");
         System.out.println("Search after a recipe. Type '2'");
         System.out.println("Create your own recipe. Type '3'");
         System.out.println("Delete one of the recipes. Type '4'");
-        System.out.println("Add To category. Type '5'");
+        System.out.println("Add Recipe To category. Type '5'");
         System.out.println("Shopping list settings. Type '6'");
-        System.out.println("Rate a recipe. Type '7'");
+        System.out.println("Change rating off recipe. Type '7'");
+        System.out.println("Add/change recipe comment. Type 8");
         System.out.println("Exit the recipe book. Type '0'");
         menu();
     }
@@ -55,6 +68,7 @@ public class Recipes {
             case 5 -> addToCategory();
             case 6 -> shoppingListSettings();
             case 7 -> rateRecipe();
+            case 8 -> addcomment();
             case 0 -> {
                 System.out.println("exting....");
                 System.exit(0);
@@ -72,8 +86,8 @@ public class Recipes {
         }
         System.out.println("\nBack To Main Menu. TYPE '1'");
         int i = scanner.nextInt();
-        switch (i) {
-            case 1 -> mainMenu();
+        if (i == 1) {
+            mainMenu();
         }
     }
 
@@ -89,7 +103,7 @@ public class Recipes {
         scanner.nextLine(); //scanner bug
 
         switch (choice) {
-            case 1:
+            case 1 -> {
                 System.out.println("Enter the name of the Dish:");
                 String dishName = scanner.nextLine();
                 boolean foundByName = false;
@@ -104,9 +118,8 @@ public class Recipes {
                     System.out.println("No recipes found with the name: " + dishName);
                     mainMenu();
                 }
-                break;
-
-            case 2:
+            }
+            case 2 -> {
                 System.out.println("Enter the ingredient:");
                 String ingredient = scanner.nextLine();
                 boolean foundByIngredient = false;
@@ -125,49 +138,41 @@ public class Recipes {
                     System.out.println("No recipes found with the ingredient: " + ingredient);
                     mainMenu();
                 }
-                break;
-
-            case 3:
+            }
+            case 3 -> {
                 System.out.println("Choose a Category:");
                 System.out.println("1. Breakfast\n2. Lunch\n3. Dinner\n4. Dessert");
                 int categoryChoice = scanner.nextInt();
                 scanner.nextLine();  // scanner bug
-
                 switch (categoryChoice) {
-                    case 1:
+                    case 1 -> {
                         for (Recipe recipe : breakfast) {
-                            System.out.println(recipe.getName());
-                        }
-                        break;
-                    case 2:
+                            System.out.println(recipe);
+                        }mainMenu();
+                    }
+                    case 2 -> {
                         for (Recipe recipe : lunch) {
-                            System.out.println(recipe.getName());
-                        }
-                        break;
-                    case 3:
+                            System.out.println(recipe);
+                        }mainMenu();
+                    }
+                    case 3 -> {
                         for (Recipe recipe : dinner) {
-                            System.out.println(recipe.getName());
-                        }
-                        break;
-                    case 4:
+                            System.out.println(recipe);
+                        }mainMenu();
+                    }
+                    case 4 -> {
                         for (Recipe recipe : dessert) {
-                            System.out.println(recipe.getName());
-                        }
-                        break;
-                    default:
-                        System.out.println("Invalid category choice.");
+                            System.out.println(recipe);
+                        }mainMenu();
+                    }
+                    default -> System.out.println("Invalid category choice.");
                 }
-                break;
-            case 4:
-                mainMenu();
-                break;
-
-            default:
+            }
+            case 4 -> mainMenu();
+            default -> {
                 System.out.println("Invalid choice!");
                 mainMenu();
-                break;
-
-
+            }
         }
     }
 
@@ -175,23 +180,32 @@ public class Recipes {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What's the name off the recipe?");
         String name = scanner.nextLine();
-        System.out.println("Whats is the ingredients? IMPORTANT TO USE CSV FORMAT!!!!");
+        System.out.println("Whats is the ingredients? CSV-format fx (tomato, cucumber)");
         String ingredients = scanner.nextLine();
         System.out.println("Whats the recipes estimated time? fx (60) in minutes");
         int estimatedtime = scanner.nextInt();
         System.out.println("What would you rate this dish? from 1-10");
         int rating = scanner.nextInt();
-        addRecipe(name, ingredients, estimatedtime, rating);
+        scanner.nextLine(); //scanner bug
+        System.out.println("Do you have any comments?");
+        String comment = scanner.nextLine();
+        addRecipe(name, ingredients, estimatedtime, rating, comment);
         System.out.println("Successful");
         System.out.println("Recipe name: " + name +
                 "\nIngredients: " + ingredients +
                 "\nEstimated Time: " + estimatedtime +
                 "\nRating: " + rating +
+                "\nComment: "+comment +
                 "\n------------------------------");
-        System.out.println("\nBack To Main Menu. TYPE '1'");
+        System.out.println("\nBack To Main Menu. TYPE '1'\nCreate another Recipe. TYPE '2'");
         int i = scanner.nextInt();
-        switch (i) {
-            case 1 -> mainMenu();
+        if (i == 1) {
+            mainMenu();
+        }else if(i==2){
+            createRecipe();
+        }else {
+            System.out.println("Not valid, back to main menu");
+            mainMenu();
         }
     }
 
@@ -208,6 +222,10 @@ public class Recipes {
                 String yesNO = scanner.nextLine();
                 if (yesNO.equalsIgnoreCase("y")) {
                     recipeList.remove(recipe);
+                    breakfast.remove(recipe);
+                    lunch.remove(recipe);
+                    dinner.remove(recipe);
+                    dessert.remove(recipe);
                     System.out.println("Successful deletion");
                     mainMenu();
                 }
@@ -262,7 +280,7 @@ public class Recipes {
     public void shoppingListSettings() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("You have the following options:");
-        System.out.println("1. Add to shopping cart");
+        System.out.println("1. Add to recipe ingredients to shopping cart");
         System.out.println("2. See shopping cart");
         System.out.println("3. Empty shopping cart");
         System.out.println("4. Main menu");
@@ -270,8 +288,8 @@ public class Recipes {
         scanner.nextLine(); // Scanner bug
 
         switch (option) {
-            case 1:
-                System.out.println("Enter the name of the Dish:");
+            case 1 -> {
+                System.out.println("Enter name of recipe:");
                 String dishName = scanner.nextLine();
                 boolean foundByName = false;
                 for (Recipe recipe : recipeList) {
@@ -279,32 +297,32 @@ public class Recipes {
                         System.out.println(recipe);
                         foundByName = true;
                         shopingList.add(recipe.getIngredients());
+                        System.out.println("Success");
                     }
                 }
                 if (!foundByName) {
                     System.out.println("No recipes found with the name: " + dishName);
                 }
                 shoppingListSettings();
-                break;
-            case 2:
-                System.out.println("Your shopping cart contains:");
+            }
+            case 2 -> {
+                System.out.println("Your shopping cart contains:\n");
                 for (String ingredient : shopingList) {
                     System.out.println(ingredient);
                 }
+                System.out.println(" ");
                 shoppingListSettings();
-                break;
-            case 3:
+            }
+            case 3 -> {
                 shopingList.clear();
                 System.out.println("Shopping cart emptied.");
                 shoppingListSettings();
-                break;
-            case 4:
-                mainMenu();
-                break;
-            default:
+            }
+            case 4 -> mainMenu();
+            default -> {
                 System.out.println("Invalid option. Please try again.");
                 shoppingListSettings();
-                break;
+            }
         }
     }
     public void rateRecipe() {
@@ -319,6 +337,27 @@ public class Recipes {
                 System.out.println("What do you want to rate this dish? 1-10");
                 int rating = scanner.nextInt();
                 recipe.setRating(rating);
+                System.out.println("Rating updated!");
+                mainMenu();
+            }
+        }
+        if (!foundByName) {
+            System.out.println("No recipes found with the name: " + dishName);
+            mainMenu();
+        }
+    }
+    public void addcomment(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the name of the Dish you want to comment:");
+        String dishName = scanner.nextLine();
+        boolean foundByName = false;
+        for (Recipe recipe : recipeList) {
+            if (recipe.getName().equalsIgnoreCase(dishName)) {
+                System.out.println(recipe);
+                foundByName = true;
+                System.out.println("What is your comment?");
+                String newComment = scanner.nextLine();
+                recipe.addComment(newComment);
                 System.out.println("Rating updated!");
                 mainMenu();
             }
