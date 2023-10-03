@@ -37,12 +37,6 @@ public class Recipes {
         breakfast.add(englishBreakfast);
         }
 
-    public void addRecipe(String name, String ingredients, int time, int rating, String comment) {
-        Recipe newRecipe = new Recipe(name, ingredients, time, rating, comment);
-        recipeList.add(newRecipe);
-    }
-
-
     public void mainMenu() {
         System.out.println("\nWould you like to:\n");
         System.out.println("See the hole Recipe Collection. Type '1'");
@@ -189,7 +183,8 @@ public class Recipes {
         scanner.nextLine(); //scanner bug
         System.out.println("Do you have any comments?");
         String comment = scanner.nextLine();
-        addRecipe(name, ingredients, estimatedtime, rating, comment);
+        Recipe newRecipe = new Recipe(name, ingredients, estimatedtime, rating, comment);
+        recipeList.add(newRecipe);
         System.out.println("Successful");
         System.out.println("Recipe name: " + name +
                 "\nIngredients: " + ingredients +
