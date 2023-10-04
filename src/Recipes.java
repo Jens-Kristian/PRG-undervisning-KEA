@@ -67,8 +67,6 @@ public class Recipes {
                 System.out.println("exting....");
                 System.exit(0);
             }
-
-
         }
     }
 
@@ -223,7 +221,7 @@ public class Recipes {
                     dessert.remove(recipe);
                     System.out.println("Successful deletion");
                     mainMenu();
-                }
+                }mainMenu();
             }
         }
         if (!foundByName) {
