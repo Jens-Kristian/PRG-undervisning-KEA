@@ -20,19 +20,19 @@ public class Recipes {
     }
 
     public void StandartRecipes() {
-        Recipe pancake = new Recipe("Pancake", "Flour, Eggs, Milk", 15, 10,"No comment");
+        Recipe pancake = new Recipe("Pancake", "Flour, Eggs, Milk", 15, 10,"Mix 1 cup flour, 2 eggs, and 1 cup milk to form a batter; cook on a hot griddle until golden.","No comment");
         recipeList.add(pancake);
         dessert.add(pancake);
 
-        Recipe salad = new Recipe("Salad", "Lettuce, Tomato, Cucumber", 10, 4,"No comment");
+        Recipe salad = new Recipe("Salad", "Lettuce, Tomato, Cucumber", 10, 4,"Chop lettuce, tomato, and cucumber; toss together for a fresh salad.","No comment");
         recipeList.add(salad);
         lunch.add(salad);
 
-        Recipe spaghetti = new Recipe("Spaghetti", "Pasta, Tomato Sauce", 30, 7,"No comment");
+        Recipe spaghetti = new Recipe("Spaghetti", "Pasta, Tomato Sauce", 30, 7,"Boil pasta until al dente; drain and mix with heated tomato sauce.","No comment");
         recipeList.add(spaghetti);
         dinner.add(spaghetti);
 
-        Recipe englishBreakfast = new Recipe("English breakfast", "Beans, eggs, bacon", 30, 2,"No comment");
+        Recipe englishBreakfast = new Recipe("English breakfast", "Beans, eggs, bacon", 30, 2,"Fry bacon until crisp, scramble eggs, and heat beans; serve together for a classic English breakfast.","No comment");
         recipeList.add(englishBreakfast);
         breakfast.add(englishBreakfast);
         }
@@ -46,7 +46,8 @@ public class Recipes {
         System.out.println("Add Recipe To category. Type '5'");
         System.out.println("Shopping list settings. Type '6'");
         System.out.println("Change rating off recipe. Type '7'");
-        System.out.println("Add/change recipe comment. Type 8");
+        System.out.println("Add/change recipe comment. Type '8'");
+        System.out.println("See Method of Preparation. Type '9' ");
         System.out.println("Exit the recipe book. Type '0'");
         menu();
     }
@@ -63,6 +64,7 @@ public class Recipes {
             case 6 -> shoppingListSettings();
             case 7 -> rateRecipe();
             case 8 -> addcomment();
+            case 9 -> getPreparationRecipe();
             case 0 -> {
                 System.out.println("exting....");
                 System.exit(0);
@@ -73,6 +75,7 @@ public class Recipes {
     public void menuIntro() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to our Recipe Collection!");
+        System.out.println("------------------------------");
         for (Recipe recipe : recipeList) {
             System.out.println(recipe);
         }
@@ -179,15 +182,18 @@ public class Recipes {
         System.out.println("What would you rate this dish? from 1-10");
         int rating = scanner.nextInt();
         scanner.nextLine(); //scanner bug
+        System.out.println("How do you prepare the recipe? (1 line String)");
+        String prepareRecipe = scanner.nextLine();
         System.out.println("Do you have any comments?");
         String comment = scanner.nextLine();
-        Recipe newRecipe = new Recipe(name, ingredients, estimatedtime, rating, comment);
+        Recipe newRecipe = new Recipe(name, ingredients, estimatedtime, rating, prepareRecipe, comment);
         recipeList.add(newRecipe);
         System.out.println("Successful");
         System.out.println("Recipe name: " + name +
                 "\nIngredients: " + ingredients +
                 "\nEstimated Time: " + estimatedtime +
                 "\nRating: " + rating +
+                "\nHow to Prepare: "+prepareRecipe+
                 "\nComment: "+comment +
                 "\n------------------------------");
         System.out.println("\nBack To Main Menu. TYPE '1'\nCreate another Recipe. TYPE '2'");
@@ -332,6 +338,47 @@ public class Recipes {
                 recipe.setRating(rating);
                 System.out.println("Rating updated!");
                 mainMenu();
+            }
+        }
+        if (!foundByName) {
+            System.out.println("No recipes found with the name: " + dishName);
+            mainMenu();
+        }
+    }
+    public void getPreparationRecipe(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the name of the recipe to see Method of Preparation:");
+        String dishName = scanner.nextLine();
+        boolean foundByName = false;
+        for (Recipe recipe : recipeList) {
+            if (recipe.getName().equalsIgnoreCase(dishName)) {
+                System.out.println("\nIngredients\n");
+                System.out.println(recipe.getIngredients());
+                System.out.println("------------------------------");
+                foundByName = true;
+                System.out.println("Method of Preparation\n");
+                System.out.println(recipe.getPreparation());
+                System.out.println("------------------------------");
+
+                System.out.println("You have the following options");
+                System.out.println("1. Change Method of preparation");
+                System.out.println("2. See Method of preparation for different recipe");
+                System.out.println("3. Back to main menu");
+                int option = scanner.nextInt();
+                scanner.nextLine(); //scanner bug
+
+                switch (option){
+                    case 1->{
+                        System.out.println("What is the Method of preparation (1 line)");
+                        String newMethodPreparation = scanner.nextLine();
+                        recipe.addPreparation(newMethodPreparation);
+                        System.out.println("Success");
+                        System.out.println(recipe);
+                        getPreparationRecipe();
+                    }
+                    case 2-> getPreparationRecipe();
+                    case 3-> mainMenu();
+                }
             }
         }
         if (!foundByName) {
