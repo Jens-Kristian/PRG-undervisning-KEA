@@ -9,7 +9,6 @@ public class Recipes {
     private final ArrayList<Recipe> dinner;
     private final ArrayList<Recipe> dessert;
 
-
     public Recipes() {
         recipeList = new ArrayList<>();
         breakfast = new ArrayList<>();
@@ -20,7 +19,7 @@ public class Recipes {
     }
 
     public void StandartRecipes() {
-        Recipe pancake = new Recipe("Pancake", "Flour, Eggs, Milk", 15, 10,"Mix 1 cup flour, 2 eggs, and 1 cup milk to form a batter; cook on a hot griddle until golden.","No comment");
+        Recipe pancake = new Recipe("Pancake", "Flour, Eggs, Milk", 15, 10,"Mix 1 cup flour, 2 eggs, and 1 cup milk to form a batter; cook on a hot pan until golden.","No comment");
         recipeList.add(pancake);
         dessert.add(pancake);
 
@@ -44,7 +43,7 @@ public class Recipes {
         System.out.println("Create your own recipe. Type '3'");
         System.out.println("Delete one of the recipes. Type '4'");
         System.out.println("Add Recipe To category. Type '5'");
-        System.out.println("Shopping list settings. Type '6'");
+        System.out.println("Access digital Shopping list. Type '6'");
         System.out.println("Change rating off recipe. Type '7'");
         System.out.println("Add/change recipe comment. Type '8'");
         System.out.println("See Method of Preparation. Type '9' ");
@@ -99,7 +98,7 @@ public class Recipes {
 
         switch (choice) {
             case 1 -> {
-                System.out.println("Enter the name of the Dish:");
+                System.out.println("Enter the name of the recipe:");
                 String dishName = scanner.nextLine();
                 boolean foundByName = false;
                 for (Recipe recipe : recipeList) {
@@ -124,7 +123,6 @@ public class Recipes {
                         if (ing.equalsIgnoreCase(ingredient)) {
                             System.out.println(recipe);
                             foundByIngredient = true;
-                            mainMenu();
                             break;
                         }
                     }
@@ -161,6 +159,7 @@ public class Recipes {
                         }mainMenu();
                     }
                     default -> System.out.println("Invalid category choice.");
+
                 }
             }
             case 4 -> mainMenu();
@@ -169,13 +168,22 @@ public class Recipes {
                 mainMenu();
             }
         }
+        mainMenu();
     }
 
     public void createRecipe() {
         Scanner scanner = new Scanner(System.in);
+        String newName="no name found";
         System.out.println("What's the name off the recipe?");
-        String name = scanner.nextLine();
-        System.out.println("Whats is the ingredients? CSV-format fx (tomato, cucumber)");
+        String mabyeNewName = scanner.nextLine();
+        for (Recipe recipe : recipeList)
+            if (recipe.getName().equalsIgnoreCase(mabyeNewName)){
+            System.out.println("Duplicate name");
+            createRecipe();
+        }else{
+                newName = mabyeNewName;
+        }
+        System.out.println("Whats is the ingredients? fx (tomato, bananas, cucumber)");
         String ingredients = scanner.nextLine();
         System.out.println("Whats the recipes estimated time? fx (60) in minutes");
         int estimatedtime = scanner.nextInt();
@@ -186,10 +194,10 @@ public class Recipes {
         String prepareRecipe = scanner.nextLine();
         System.out.println("Do you have any comments?");
         String comment = scanner.nextLine();
-        Recipe newRecipe = new Recipe(name, ingredients, estimatedtime, rating, prepareRecipe, comment);
+        Recipe newRecipe = new Recipe(newName, ingredients, estimatedtime, rating, prepareRecipe, comment);
         recipeList.add(newRecipe);
         System.out.println("Successful");
-        System.out.println("Recipe name: " + name +
+        System.out.println("Recipe name: " + newName +
                 "\nIngredients: " + ingredients +
                 "\nEstimated Time: " + estimatedtime +
                 "\nRating: " + rating +
@@ -210,7 +218,7 @@ public class Recipes {
 
     public void deleteRecipe() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the name of the Dish you want to delete:");
+        System.out.println("Enter the name of the recipe you want to delete:");
         String dishName = scanner.nextLine();
         boolean foundByName = false;
         for (Recipe recipe : recipeList) {
@@ -227,7 +235,7 @@ public class Recipes {
                     dessert.remove(recipe);
                     System.out.println("Successful deletion");
                     mainMenu();
-                }mainMenu();
+                }System.out.println("Deletion failed");mainMenu();
             }
         }
         if (!foundByName) {
@@ -239,14 +247,14 @@ public class Recipes {
 
     public void addToCategory() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the name of the Dish you want to Categorise:");
+        System.out.println("Enter the name of the recipe you want to Categorise:");
         String dishName = scanner.nextLine();
         boolean foundByName = false;
         for (Recipe recipe : recipeList) {
             if (recipe.getName().equalsIgnoreCase(dishName)) {
                 System.out.println(recipe);
                 foundByName = true;
-                System.out.println("What category do you want to add? [breakfast, lunch, dinner, dessert]");
+                System.out.println("What category do you want to add "+recipe.getName()+" to? [breakfast, lunch, dinner, dessert]");
                 String category = scanner.nextLine().toLowerCase();
                 switch (category) {
                     case "breakfast" -> {
@@ -279,7 +287,7 @@ public class Recipes {
     public void shoppingListSettings() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("You have the following options:");
-        System.out.println("1. Add to recipe ingredients to shopping cart");
+        System.out.println("1. Add recipe ingredients to shopping cart");
         System.out.println("2. See shopping cart");
         System.out.println("3. Empty shopping cart");
         System.out.println("4. Main menu");
@@ -319,21 +327,22 @@ public class Recipes {
             }
             case 4 -> mainMenu();
             default -> {
-                System.out.println("Invalid option. Please try again.");
+                System.out.println("Invalid, try again.");
                 shoppingListSettings();
             }
         }
     }
+
     public void rateRecipe() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the name of the Dish you want to Rate:");
+        System.out.println("Enter the name of the recipe you want to recipe:");
         String dishName = scanner.nextLine();
         boolean foundByName = false;
         for (Recipe recipe : recipeList) {
             if (recipe.getName().equalsIgnoreCase(dishName)) {
                 System.out.println(recipe);
                 foundByName = true;
-                System.out.println("What do you want to rate this dish? 1-10");
+                System.out.println("What do you want to rate this recipe? 1-10");
                 int rating = scanner.nextInt();
                 recipe.setRating(rating);
                 System.out.println("Rating updated!");
@@ -388,7 +397,7 @@ public class Recipes {
     }
     public void addcomment(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the name of the Dish you want to comment:");
+        System.out.println("Enter the name of the recipe you want to comment:");
         String dishName = scanner.nextLine();
         boolean foundByName = false;
         for (Recipe recipe : recipeList) {
